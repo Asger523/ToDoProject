@@ -51,7 +51,9 @@ const Overview = ({navigation}) => {
 
       {/* Clear Button */}
       {tasks.length > 0 && (
-        <Button title="Clear All Tasks" onPress={clearTasks} />
+        <View style={styles.addTaskContainer}>
+          <Button color="#fff" title="Clear All Tasks" onPress={clearTasks} />
+        </View>
       )}
     </SafeAreaView>
   );

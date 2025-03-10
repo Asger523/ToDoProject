@@ -3,15 +3,19 @@ import {Button, Pressable, StyleSheet, Text, View} from 'react-native';
 import {useTasks} from '../contexts/tasks.context';
 
 export const TaskItem = (props: {
-  task: {title: string; description: string};
+  task: {title: string; description: string; date: Date};
   onPressGoToDetails: any;
 }) => {
   const {task, onPressGoToDetails} = props;
-
   const {removeTask} = useTasks();
 
+  //Check the task date:
+  const isPastDue = task.date < new Date();
+
   return (
-    <Pressable onPress={onPressGoToDetails} style={styles.task}>
+    <Pressable
+      onPress={onPressGoToDetails}
+      style={[styles.task, isPastDue && styles.pastDueTask]}>
       <View style={styles.taskTextContainer}>
         <Text style={styles.taskText}>{task.title}</Text>
       </View>
@@ -30,6 +34,10 @@ const styles = StyleSheet.create({
     borderColor: '#ddd',
     flexDirection: 'row',
     marginHorizontal: 16,
+  },
+  pastDueTask: {
+    backgroundColor: 'red',
+    borderColor: '#red',
   },
   taskTextContainer: {
     flex: 1,

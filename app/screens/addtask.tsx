@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import DatePicker from 'react-native-date-picker';
 import {
   View,
   StyleSheet,
@@ -13,9 +14,10 @@ const AddTask = ({navigation}) => {
   const {addTask} = useTasks();
   const [newTitle, setNewTitle] = useState('');
   const [newDescription, setNewDescription] = useState('');
+  const [date, setDate] = useState(new Date());
 
   const buttonPress = () => {
-    addTask({title: newTitle, description: newDescription});
+    addTask({title: newTitle, description: newDescription, date: date});
     navigation.navigate('Overview');
   };
 
@@ -49,6 +51,11 @@ const AddTask = ({navigation}) => {
           value={newDescription}
           onChangeText={setNewDescription}
         />
+      </View>
+
+      {/* Date Picker */}
+      <View style={styles.dateContainer}>
+        <DatePicker mode={'date'} date={date} onDateChange={setDate} />
       </View>
 
       {/* Seperator */}
@@ -94,6 +101,13 @@ const styles = StyleSheet.create({
     height: 6,
     backgroundColor: '#6200ee',
     marginVertical: 10,
+  },
+  dateContainer: {
+    backgroundColor: '#fff',
+    marginHorizontal: 16,
+    borderWidth: 1,
+    borderRadius: 6,
+    alignSelf: 'center',
   },
   addTaskContainer: {
     backgroundColor: '#6200ee',
