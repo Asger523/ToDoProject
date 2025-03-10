@@ -1,130 +1,141 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
-import React from 'react';
-import type {PropsWithChildren} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
-  ScrollView,
-  StatusBar,
-  StyleSheet,
   Text,
-  useColorScheme,
   View,
+  TextInput,
+  Button,
+  ScrollView,
+  StyleSheet,
+  SafeAreaView,
+  FlatList,
 } from 'react-native';
+import {TaskItem} from './app/components/TaskItem';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+const App = () => {
+  const [tasks, setTasks] = useState<string[]>([]);
+  const [newTask, setNewTask] = useState<string>('');
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
+  useEffect(() => {
+    // Load tasks from storage - function
+    const loadTasks = async () => {
+      // Get stored tasks from storage
+      const storedTasks = await AsyncStorage.getItem('tasks');
+      if (storedTasks) {
+        // Set the state with the stored tasks
+        setTasks(JSON.parse(storedTasks));
+      }
+    };
 
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-}
+    // Call the above function
+    loadTasks();
+  }, []);
 
-function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+  useEffect(() => {
+    // Save tasks into storage - function
+    const saveTasks = async () => {
+      // Everytime the tasks list is changed is saved to storage
+      await AsyncStorage.setItem('tasks', JSON.stringify(tasks));
+    };
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
+    // Call the above function
+    saveTasks();
 
-  /*
-   * To keep the template simple and small we're adding padding to prevent view
-   * from rendering under the System UI.
-   * For bigger apps the reccomendation is to use `react-native-safe-area-context`:
-   * https://github.com/AppAndFlow/react-native-safe-area-context
-   *
-   * You can read more about it here:
-   * https://github.com/react-native-community/discussions-and-proposals/discussions/827
-   */
-  const safePadding = '5%';
+    // Because this **useEffect** has **tasks** state as a dependency, it will "run" everytime the tasks list is changed
+  }, [tasks]);
 
   return (
-    <View style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        style={backgroundStyle}>
-        <View style={{paddingRight: safePadding}}>
-          <Header/>
-        </View>
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-            paddingHorizontal: safePadding,
-            paddingBottom: safePadding,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </View>
+    <SafeAreaView style={styles.background}>
+      {/* Header */}
+      <View style={styles.headerContainer}>
+        <Text style={styles.headerText}>To-Do App</Text>
+      </View>
+
+      {/* Input field */}
+      <View style={styles.inputContainer}>
+        <TextInput
+          value={newTask}
+          style={styles.input}
+          placeholder="Enter a new task..."
+          placeholderTextColor="#aaa"
+          onChangeText={text => setNewTask(text)}
+        />
+        <Button
+          title="Add"
+          onPress={() => {
+            setTasks([...tasks, newTask]);
+            setNewTask('');
+          }}
+        />
+      </View>
+
+      {/* Simple seperator */}
+      <View style={styles.seperator} />
+
+      {/* Task List */}
+      {tasks.length === 0 ? (
+        <Text style={styles.errorNoTasks}>No tasks available</Text>
+      ) : (
+        <FlatList
+          style={styles.tasksContainer}
+          data={tasks}
+          renderItem={({item}) => (
+            <TaskItem
+              title={item}
+              onPress={() => {
+                setTasks(tasks.filter(task => task !== item));
+              }}
+            />
+          )}
+        />
+      )}
+      {tasks.length !== 0 ? (
+        <Button title="Clear All" onPress={() => setTasks([])} />
+      ) : null}
+    </SafeAreaView>
   );
-}
+};
 
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+  background: {
+    backgroundColor: '#3b3b3b',
+    flex: 1,
   },
-  sectionTitle: {
+  headerContainer: {
+    padding: 20,
+    backgroundColor: '#6200ee',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  headerText: {
     fontSize: 24,
-    fontWeight: '600',
+    color: '#fff',
+    fontWeight: 'bold',
   },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
+  seperator: {
+    height: 6,
+    backgroundColor: '#6200ee',
   },
-  highlight: {
-    fontWeight: '700',
+  inputContainer: {
+    flexDirection: 'row',
+    marginBottom: 10,
+    marginHorizontal: 16,
+  },
+  input: {
+    flex: 1,
+    borderWidth: 1,
+    borderRadius: 6,
+    padding: 10,
+    backgroundColor: '#fff',
+  },
+  tasksContainer: {
+    paddingTop: 10,
+  },
+  errorNoTasks: {
+    color: '#fff',
+    fontSize: 16,
+    textAlign: 'center',
+    marginTop: 20,
   },
 });
 
