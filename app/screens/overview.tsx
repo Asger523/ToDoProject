@@ -1,8 +1,6 @@
-import React, {useState} from 'react';
 import {
   Text,
   View,
-  TextInput,
   Button,
   StyleSheet,
   SafeAreaView,
@@ -12,8 +10,7 @@ import {TaskItem} from './../components/TaskItem';
 import {useTasks} from '../contexts/tasks.context';
 
 const Overview = ({navigation}) => {
-  const {tasks, addTask, clearTasks} = useTasks();
-  const [newTask, setNewTask] = useState<string>('');
+  const {tasks, clearTasks} = useTasks();
 
   return (
     <SafeAreaView style={styles.background}>
@@ -22,21 +19,12 @@ const Overview = ({navigation}) => {
         <Text style={styles.headerText}>To-Do App</Text>
       </View>
 
-      {/* Input field */}
-      <View style={styles.inputContainer}>
-        <TextInput
-          value={newTask}
-          style={styles.input}
-          placeholder="Enter a new task..."
-          placeholderTextColor="#aaa"
-          onChangeText={text => setNewTask(text)}
-        />
+      {/*  Add Task button */}
+      <View style={styles.addTaskContainer}>
         <Button
-          title="Add"
-          onPress={() => {
-            addTask(newTask);
-            setNewTask('');
-          }}
+          title="Add Task"
+          color={'#fff'}
+          onPress={() => navigation.navigate('AddTask')}
         />
       </View>
 
@@ -52,7 +40,7 @@ const Overview = ({navigation}) => {
           data={tasks}
           renderItem={({item}) => (
             <TaskItem
-              title={item}
+              task={item}
               onPressGoToDetails={() =>
                 navigation.navigate('TaskDetails', {task: item})
               }
@@ -89,10 +77,13 @@ const styles = StyleSheet.create({
     height: 6,
     backgroundColor: '#6200ee',
   },
-  inputContainer: {
-    flexDirection: 'row',
+  addTaskContainer: {
+    backgroundColor: '#6200ee',
     marginBottom: 10,
     marginHorizontal: 16,
+    borderWidth: 1,
+    borderRadius: 6,
+    alignSelf: 'center',
   },
   input: {
     flex: 1,

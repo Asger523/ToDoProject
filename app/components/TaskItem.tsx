@@ -2,17 +2,20 @@ import React from 'react';
 import {Button, Pressable, StyleSheet, Text, View} from 'react-native';
 import {useTasks} from '../contexts/tasks.context';
 
-export const TaskItem = (props: {title: any; onPressGoToDetails: any}) => {
-  const {title, onPressGoToDetails} = props;
+export const TaskItem = (props: {
+  task: {title: string; description: string};
+  onPressGoToDetails: any;
+}) => {
+  const {task, onPressGoToDetails} = props;
 
   const {removeTask} = useTasks();
 
   return (
     <Pressable onPress={onPressGoToDetails} style={styles.task}>
       <View style={styles.taskTextContainer}>
-        <Text style={styles.taskText}>{title}</Text>
+        <Text style={styles.taskText}>{task.title}</Text>
       </View>
-      <Button title={'Done'} onPress={() => removeTask(title)} />
+      <Button title={'Done'} onPress={() => removeTask(task)} />
     </Pressable>
   );
 };

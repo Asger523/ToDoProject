@@ -1,25 +1,30 @@
 import React, {useState, useEffect, createContext, useContext} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+// Task Interface
+interface Task {
+  title: string;
+  description: string;
+}
 // TaskContext Interface
 interface TaskContextInterface {
-  tasks: string[];
-  addTask: (newTask: string) => void;
-  removeTask: (taskToRemove: string) => void;
+  tasks: Task[];
+  addTask: (newTask: Task) => void;
+  removeTask: (taskToRemove: Task) => void;
   clearTasks: () => void;
 }
 
 // Create TaskContext
 const TaskContext = createContext<TaskContextInterface>({
   tasks: [],
-  addTask: (newTask: string) => {},
-  removeTask: (taskToRemove: string) => {},
+  addTask: (newTask: Task) => {},
+  removeTask: (taskToRemove: Task) => {},
   clearTasks: () => {},
 });
 
 // TaskProvider Component
 export const TaskProvider = ({children}) => {
-  const [tasks, setTasks] = useState<string[]>([]);
+  const [tasks, setTasks] = useState<Task[]>([]);
 
   // Load tasks from AsyncStorage on app load
   useEffect(() => {
@@ -41,13 +46,13 @@ export const TaskProvider = ({children}) => {
   }, [tasks]);
 
   // Add Task
-  const addTask = (newTask: string) => {
+  const addTask = (newTask: Task) => {
     setTasks([...tasks, newTask]);
   };
 
   // Remove Task
-  const removeTask = (taskToRemove: string) => {
-    setTasks(tasks.filter(task => task !== taskToRemove));
+  const removeTask = (taskToRemove: Task) => {
+    setTasks(tasks.filter(task => task.title !== taskToRemove.title));
   };
 
   // Clear All Tasks

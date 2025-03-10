@@ -8,7 +8,8 @@ const TaskDetails = ({route}) => {
     <SafeAreaView style={styles.container}>
       <View>
         <Text style={styles.title}>Task Details</Text>
-        <Text style={styles.taskText}>{task}</Text>
+        <Text style={styles.taskText}>{task.title}</Text>
+        <Text style={styles.taskText}>{task.description}</Text>
       </View>
     </SafeAreaView>
   );
