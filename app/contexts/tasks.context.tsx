@@ -13,6 +13,7 @@ interface TaskContextInterface {
   tasks: Task[];
   addTask: (newTask: Task) => void;
   removeTask: (taskToRemove: Task) => void;
+  updateTask: (taskToUpdate: Task) => void;
   clearTasks: () => void;
 }
 
@@ -21,6 +22,7 @@ const TaskContext = createContext<TaskContextInterface>({
   tasks: [],
   addTask: (newTask: Task) => {},
   removeTask: (taskToRemove: Task) => {},
+  updateTask: (taskToUpdate: Task) => {},
   clearTasks: () => {},
 });
 
@@ -69,6 +71,14 @@ export const TaskProvider = ({children}) => {
     setTasks(tasks.filter(task => task.title !== taskToRemove.title));
   };
 
+  // Update Task
+  const updateTask = (taskToUpdate: Task) => {
+    setTasks(
+      tasks.map(task =>
+        task.title === taskToUpdate.title ? taskToUpdate : task,
+      ),
+    );
+  };
   // Clear All Tasks
   const clearTasks = async () => {
     setTasks([]);
@@ -76,7 +86,8 @@ export const TaskProvider = ({children}) => {
   };
 
   return (
-    <TaskContext.Provider value={{tasks, addTask, removeTask, clearTasks}}>
+    <TaskContext.Provider
+      value={{tasks, addTask, removeTask, updateTask, clearTasks}}>
       {children}
     </TaskContext.Provider>
   );

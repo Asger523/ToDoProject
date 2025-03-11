@@ -7,22 +7,32 @@ export const TaskItem = (props: {
   onPressGoToDetails: any;
 }) => {
   const {task, onPressGoToDetails} = props;
-  const {removeTask} = useTasks();
+  const {removeTask, updateTask} = useTasks();
   // Convert to Date object
   const formatDate = task.date.toLocaleDateString();
   //Check the task date:
   const isPastDue = task.date < new Date();
+  //Check if task is done:
+  const done = task.isDone;
+
+  const handleDone = () => {
+    updateTask({...task, isDone: true});
+  };
 
   return (
     <Pressable
       onPress={onPressGoToDetails}
-      style={[styles.task, isPastDue && styles.pastDueTask]}>
+      style={[
+        styles.task,
+        isPastDue && styles.pastDueTask,
+        done && styles.doneTask,
+      ]}>
       <View style={styles.taskTextContainer}>
         <Text style={styles.taskText}>{task.title}</Text>
         <Text style={styles.taskDateText}>Due: {formatDate}</Text>
       </View>
-      <Button title={'Done'} onPress={() => (task.isDone = true)} />
-      <Button title={'Remove'} onPress={() => removeTask(task)} />
+      {!done && <Button title={'Done'} onPress={handleDone} />}
+      {done && <Button title={'Remove'} onPress={() => removeTask(task)} />}
     </Pressable>
   );
 };
@@ -41,6 +51,10 @@ const styles = StyleSheet.create({
   pastDueTask: {
     backgroundColor: 'red',
     borderColor: 'red',
+  },
+  doneTask: {
+    backgroundColor: 'green',
+    borderColor: 'green',
   },
   taskTextContainer: {
     flex: 1,
