@@ -38,6 +38,7 @@ const Overview = ({navigation}) => {
         </View>
       ) : (
         <FlatList
+        tasks.filter(task =>task.isDone !== true)
           style={styles.tasksContainer}
           data={tasks}
           renderItem={({item}) => (

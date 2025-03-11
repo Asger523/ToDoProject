@@ -22,7 +22,12 @@ const AddTask = ({navigation}) => {
       Alert.alert('Please make sure all fields are filled out.');
       return;
     }
-    addTask({title: newTitle, description: newDescription, date: date});
+    addTask({
+      title: newTitle,
+      description: newDescription,
+      date: date,
+      isDone: false,
+    });
     navigation.goBack();
   };
 

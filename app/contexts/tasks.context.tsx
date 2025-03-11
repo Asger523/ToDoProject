@@ -6,6 +6,7 @@ interface Task {
   title: string;
   description: string;
   date: Date;
+  isDone?: boolean;
 }
 // TaskContext Interface
 interface TaskContextInterface {

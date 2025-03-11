@@ -3,7 +3,7 @@ import {Button, Pressable, StyleSheet, Text, View} from 'react-native';
 import {useTasks} from '../contexts/tasks.context';
 
 export const TaskItem = (props: {
-  task: {title: string; description: string; date: Date};
+  task: {title: string; description: string; date: Date; isDone?: boolean};
   onPressGoToDetails: any;
 }) => {
   const {task, onPressGoToDetails} = props;
@@ -21,7 +21,7 @@ export const TaskItem = (props: {
         <Text style={styles.taskText}>{task.title}</Text>
         <Text style={styles.taskDateText}>Due: {formatDate}</Text>
       </View>
-      <Button title={'Done'} onPress={() => console.log('Done pressed')} />
+      <Button title={'Done'} onPress={() => (task.isDone = true)} />
       <Button title={'Remove'} onPress={() => removeTask(task)} />
     </Pressable>
   );
