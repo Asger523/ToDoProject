@@ -8,7 +8,8 @@ export const TaskItem = (props: {
 }) => {
   const {task, onPressGoToDetails} = props;
   const {removeTask} = useTasks();
-
+  // Convert to Date object
+  const formatDate = task.date.toLocaleDateString();
   //Check the task date:
   const isPastDue = task.date < new Date();
 
@@ -18,8 +19,10 @@ export const TaskItem = (props: {
       style={[styles.task, isPastDue && styles.pastDueTask]}>
       <View style={styles.taskTextContainer}>
         <Text style={styles.taskText}>{task.title}</Text>
+        <Text style={styles.taskDateText}>Due: {formatDate}</Text>
       </View>
-      <Button title={'Done'} onPress={() => removeTask(task)} />
+      <Button title={'Done'} onPress={() => console.log('Done pressed')} />
+      <Button title={'Remove'} onPress={() => removeTask(task)} />
     </Pressable>
   );
 };
@@ -37,7 +40,7 @@ const styles = StyleSheet.create({
   },
   pastDueTask: {
     backgroundColor: 'red',
-    borderColor: '#red',
+    borderColor: 'red',
   },
   taskTextContainer: {
     flex: 1,
@@ -45,5 +48,8 @@ const styles = StyleSheet.create({
   },
   taskText: {
     fontSize: 17,
+  },
+  taskDateText: {
+    fontSize: 14,
   },
 });

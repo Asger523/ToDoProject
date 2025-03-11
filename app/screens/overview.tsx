@@ -33,7 +33,9 @@ const Overview = ({navigation}) => {
 
       {/* Task List */}
       {tasks.length === 0 ? (
-        <Text style={styles.errorNoTasks}>No tasks available</Text>
+        <View style={styles.hugeSeperator}>
+          <Text style={styles.errorNoTasks}>No tasks available</Text>
+        </View>
       ) : (
         <FlatList
           style={styles.tasksContainer}
@@ -49,6 +51,14 @@ const Overview = ({navigation}) => {
         />
       )}
 
+      {/* View Done Tasks */}
+      <View style={styles.addTaskContainer}>
+        <Button
+          title="View done tasks"
+          color={'#fff'}
+          onPress={() => navigation.navigate('DoneTasks')}
+        />
+      </View>
       {/* Clear Button */}
       {tasks.length > 0 && (
         <View style={styles.addTaskContainer}>
@@ -96,12 +106,16 @@ const styles = StyleSheet.create({
   },
   tasksContainer: {
     paddingTop: 10,
+    flex: 1,
   },
   errorNoTasks: {
     color: '#fff',
     fontSize: 16,
     textAlign: 'center',
     marginTop: 20,
+  },
+  hugeSeperator: {
+    flex: 1,
   },
 });
 

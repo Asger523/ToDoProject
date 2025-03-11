@@ -32,7 +32,11 @@ export const TaskProvider = ({children}) => {
     const loadTasks = async () => {
       const storedTasks = await AsyncStorage.getItem('tasks');
       if (storedTasks) {
-        setTasks(JSON.parse(storedTasks));
+        const parsedTasks = JSON.parse(storedTasks).map(t => ({
+          ...t,
+          date: new Date(t.date), // Convert date string to Date object
+        }));
+        setTasks(parsedTasks);
       }
     };
     loadTasks();
@@ -41,7 +45,15 @@ export const TaskProvider = ({children}) => {
   // Save tasks to AsyncStorage whenever they change
   useEffect(() => {
     const saveTasks = async () => {
-      await AsyncStorage.setItem('tasks', JSON.stringify(tasks));
+      await AsyncStorage.setItem(
+        'tasks',
+        JSON.stringify(
+          tasks.map(t => ({
+            ...t,
+            date: t.date instanceof Date ? t.date.toISOString() : t.date,
+          })),
+        ),
+      );
     };
     saveTasks();
   }, [tasks]);

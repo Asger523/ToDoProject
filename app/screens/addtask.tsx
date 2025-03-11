@@ -7,6 +7,7 @@ import {
   TextInput,
   Button,
   Text,
+  Alert,
 } from 'react-native';
 import {useTasks} from '../contexts/tasks.context';
 
@@ -16,9 +17,13 @@ const AddTask = ({navigation}) => {
   const [newDescription, setNewDescription] = useState('');
   const [date, setDate] = useState(new Date());
 
-  const buttonPress = () => {
+  const handleAddTask = () => {
+    if (newTitle === '' || newDescription === '') {
+      Alert.alert('Please make sure all fields are filled out.');
+      return;
+    }
     addTask({title: newTitle, description: newDescription, date: date});
-    navigation.navigate('Overview');
+    navigation.goBack();
   };
 
   return (
@@ -63,7 +68,7 @@ const AddTask = ({navigation}) => {
 
       {/* Add Task Button */}
       <View style={styles.addTaskContainer}>
-        <Button title="Add Task" color="#fff" onPress={() => buttonPress()} />
+        <Button title="Add Task" color="#fff" onPress={() => handleAddTask()} />
       </View>
     </SafeAreaView>
   );

@@ -3,7 +3,8 @@ import {View, Text, StyleSheet, SafeAreaView} from 'react-native';
 
 const TaskDetails = ({route}) => {
   const {task} = route.params;
-  const formatDate = task.date.toDateString();
+  const taskDate = new Date(task.date); // Convert to Date object
+  const formatDate = taskDate.toLocaleDateString();
 
   return (
     <SafeAreaView style={styles.background}>
@@ -17,12 +18,14 @@ const TaskDetails = ({route}) => {
 
       {/* Title */}
       <View style={styles.titleContainer}>
-        <Text style={styles.titleText}>{task.title + ':'}</Text>
+        <Text style={styles.titleText}>{task.title}</Text>
       </View>
 
       {/* Description */}
       <View style={styles.descriptionContainer}>
-        <Text style={styles.descriptionText}>{task.description}</Text>
+        <Text style={styles.descriptionText}>
+          {'Description: \n' + task.description}
+        </Text>
       </View>
 
       {/* Due date */}
