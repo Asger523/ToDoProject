@@ -49,12 +49,12 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
   },
   pastDueTask: {
-    backgroundColor: 'red',
-    borderColor: 'red',
+    backgroundColor: '#e60000',
+    borderColor: '#e60000',
   },
   doneTask: {
-    backgroundColor: 'green',
-    borderColor: 'green',
+    backgroundColor: '#2B9348',
+    borderColor: '#2B9348',
   },
   taskTextContainer: {
     flex: 1,

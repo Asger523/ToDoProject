@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
   },
   headerContainer: {
     padding: 20,
-    backgroundColor: '#6200ee',
+    backgroundColor: '#023E8A',
     alignItems: 'center',
     marginBottom: 10,
   },
@@ -87,10 +87,10 @@ const styles = StyleSheet.create({
   },
   seperator: {
     height: 6,
-    backgroundColor: '#6200ee',
+    backgroundColor: '#023E8A',
   },
   addTaskContainer: {
-    backgroundColor: '#6200ee',
+    backgroundColor: '#023E8A',
     marginBottom: 10,
     marginHorizontal: 16,
     borderWidth: 1,

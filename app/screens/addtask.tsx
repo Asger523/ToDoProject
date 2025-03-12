@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
   },
   seperator: {
     height: 6,
-    backgroundColor: '#6200ee',
+    backgroundColor: '#023E8A',
     marginVertical: 10,
   },
   dateContainer: {
@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   addTaskContainer: {
-    backgroundColor: '#6200ee',
+    backgroundColor: '#023E8A',
     marginHorizontal: 16,
     borderWidth: 1,
     borderRadius: 6,

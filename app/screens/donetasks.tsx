@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
   },
   seperator: {
     height: 6,
-    backgroundColor: '#6200ee',
+    backgroundColor: '#023E8A',
     marginVertical: 10,
   },
   tasksContainer: {

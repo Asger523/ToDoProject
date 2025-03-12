@@ -11,7 +11,7 @@ const Stack = createNativeStackNavigator();
 
 const App = () => {
   const scrOptions = {
-    headerStyle: {backgroundColor: '#6200ee'},
+    headerStyle: {backgroundColor: '#023E8A'},
     headerTitleStyle: {color: 'white'},
     headerBackTitleVisible: false,
     headerTintColor: 'white',
