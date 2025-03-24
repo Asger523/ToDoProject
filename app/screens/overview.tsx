@@ -5,18 +5,36 @@ import {
   StyleSheet,
   SafeAreaView,
   FlatList,
+  TextInput,
 } from 'react-native';
 import {TaskItem} from './../components/TaskItem';
 import {useTasks} from '../contexts/tasks.context';
+import {useState} from 'react';
 
 const Overview = ({navigation}) => {
   const {tasks, clearTasks} = useTasks();
+  const [search, setSearch] = useState('');
+
+  // Filter tasks based on search. Not case sensitive
+  const filteredTasks = tasks.filter(task =>
+    task.title.toLowerCase().includes(search.toLowerCase()),
+  );
 
   return (
     <SafeAreaView style={styles.background}>
       {/* Header */}
       <View style={styles.headerContainer}>
         <Text style={styles.headerText}>To-Do App</Text>
+      </View>
+
+      {/* Search bar */}
+      <View style={styles.inputContainer}>
+        <TextInput
+          style={styles.input}
+          placeholder="Search tasks..."
+          value={search}
+          onChangeText={setSearch}
+        />
       </View>
 
       {/*  Add Task button */}
@@ -32,14 +50,14 @@ const Overview = ({navigation}) => {
       <View style={styles.seperator} />
 
       {/* Task List */}
-      {tasks.length === 0 ? (
+      {filteredTasks.length === 0 ? (
         <View style={styles.hugeSeperator}>
           <Text style={styles.errorNoTasks}>No tasks available</Text>
         </View>
       ) : (
         <FlatList
           style={styles.tasksContainer}
-          data={tasks.filter(task => task.isDone !== true)}
+          data={filteredTasks.filter(task => task.isDone !== true)}
           renderItem={({item}) => (
             <TaskItem
               task={item}
@@ -59,6 +77,7 @@ const Overview = ({navigation}) => {
           onPress={() => navigation.navigate('DoneTasks')}
         />
       </View>
+
       {/* Clear Button */}
       {tasks.length > 0 && (
         <View style={styles.addTaskContainer}>
@@ -85,6 +104,19 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontWeight: 'bold',
   },
+  inputContainer: {
+    flexDirection: 'row',
+    marginHorizontal: 16,
+    marginVertical: 5,
+  },
+  input: {
+    flex: 1,
+    borderWidth: 1,
+    borderRadius: 6,
+    padding: 10,
+    backgroundColor: '#fff',
+    minHeight: 40,
+  },
   seperator: {
     height: 6,
     backgroundColor: '#023E8A',
@@ -96,13 +128,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 6,
     alignSelf: 'center',
-  },
-  input: {
-    flex: 1,
-    borderWidth: 1,
-    borderRadius: 6,
-    padding: 10,
-    backgroundColor: '#fff',
   },
   tasksContainer: {
     paddingTop: 10,
